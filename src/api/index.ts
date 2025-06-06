@@ -3,6 +3,8 @@ import { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { Routes } from "./route.interface";
 import { notFoundHandler, errorHandler } from "./errorhandlers/error.handler";
+import mongoose from "mongoose";
+import { DATABASE_URL } from "../../env";
 
 class App {
   public app: Express;
@@ -41,7 +43,7 @@ class App {
 
   private initRoutes(routes: Routes) {
     routes.forEach((route) => {
-      this.app.use(`/api/v1/${route.path}`, route.router);
+      this.app.use(`/api/v1`, route.router);
     });
   }
 
@@ -52,7 +54,7 @@ class App {
 
   private async initDB() {
     try {
-      // code to install db
+      await mongoose.connect(DATABASE_URL);
       console.log("Database connection established");
     } catch (error) {
       console.log("Database connection failed");

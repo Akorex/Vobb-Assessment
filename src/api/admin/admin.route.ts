@@ -1,7 +1,7 @@
 import { AuthController } from "./admin.controller";
 import { Router } from "express";
 
-export class AuthRoute {
+export class AdminRoute {
   public router = Router();
   private authController = new AuthController();
 
@@ -10,7 +10,7 @@ export class AuthRoute {
   }
 
   initRoutes() {
-    this.router.post("/register", this.authController.register);
-    this.router.post("/login", this.authController.login);
+    this.router.post("/admin/register", this.authController.register);
+    this.router.post("/admin/login", this.authController.login);
   }
 }

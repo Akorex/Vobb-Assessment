@@ -40,17 +40,22 @@ export class AuthService {
         );
       }
 
-      // check if password matches with stored password in database
       if (!checkValidity(password, user.password)) {
         return ResponseHandler.error(
           `You have entered a wrong login credentials`
         );
       }
 
-      const accessToken = generateAccessToken(user._id as unknown as string);
+      const accessToken = await generateAccessToken(
+        user._id as unknown as string
+      );
 
-      return ResponseHandler.success(`Successfully logged-in`, {
-        user,
+      return ResponseHandler.success("Successfully logged-in", {
+        user: {
+          _id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
         accessToken,
       });
     } catch (error) {
