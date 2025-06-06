@@ -31,7 +31,7 @@ export class CarService {
     try {
       const offset = (page - 1) * limit;
 
-      let query = { categoryId };
+      let query = { category: categoryId };
 
       const [cars, totalCount] = await Promise.all([
         Car.find(query).sort({ createdAt: -1 }).skip(offset).limit(limit),
