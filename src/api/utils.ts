@@ -1,7 +1,6 @@
 import { genSaltSync, hashSync, compareSync } from "bcryptjs";
 import { sign, verify, JwtPayload } from "jsonwebtoken";
-import { JWT_SECRET, JWT_LIFETIME } from "../../env";
-import { ResponseHandler } from "./responses/response";
+import { JWT_SECRET } from "../../env";
 import { Request, Response, NextFunction } from "express";
 import Admin from "./admin/admin.model";
 import { CustomError } from "./errorhandlers/error";
@@ -24,7 +23,7 @@ export const checkValidity = (value: string, otherValue: string) => {
 };
 
 export const generateAccessToken = async (id: string): Promise<string> => {
-  let token = sign({ id }, JWT_LIFETIME, {
+  let token = sign({ id }, JWT_SECRET, {
     expiresIn: "30m",
   });
 
@@ -43,10 +42,12 @@ export const verifyUserAccessToken = async (
   const authHeaders = req.headers["authorization"];
   const token = authHeaders && authHeaders.split(" ")[1];
 
-  if (!token) throw CustomError.wrap("Unauthorized");
+  if (!token) throw CustomError.Unauthorized();
 
   verify(token, JWT_SECRET, (err, token) => {
-    if (err) throw CustomError.wrap("Unauthorized");
+    if (err) {
+      throw CustomError.Forbidden();
+    }
 
     const { id } = token as JwtPayload;
 

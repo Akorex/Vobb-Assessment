@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import Category from "./categories/categories.model";
+import { DATABASE_URL } from "../../env";
 
 const seedDB = async () => {
   try {
+    await mongoose.connect(DATABASE_URL);
     const carCategorySeed = [
       {
         title: "SUV",
@@ -22,9 +24,11 @@ const seedDB = async () => {
     ];
 
     await Category.insertMany(carCategorySeed);
-    console.log("Product seeding completed!");
+    console.log("DB seeding completed!");
     process.exit(0);
   } catch (error) {
     console.log(error);
   }
 };
+
+seedDB();

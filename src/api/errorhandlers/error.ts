@@ -18,6 +18,13 @@ export class CustomError extends Error {
       return error; // Already wrapped
     }
 
+    if (error.message === "Unauthorized" || error.message === "Forbidden") {
+      return new CustomError(
+        401,
+        "You do not have permission for this resource"
+      );
+    }
+
     // if (error.name === "EntityMetadataNotFoundError") {
     //   return new CustomError(
     //     500,
@@ -57,7 +64,7 @@ export class CustomError extends Error {
     // }
 
     // 🔥 Log the full error stack for debugging
-    console.error("Unhandled error:", error);
+    console.error("Unhandled error message:", error.message);
 
     return CustomError.InternalServerError();
   }

@@ -10,6 +10,9 @@ export class CarRoute {
   }
   initRoutes() {
     this.router.get("/cars/:carId", this.carController.get);
-    this.router.get("/cars/:categoryId", this.carController.getAllByCategory);
+    this.router.get(
+      "/cars/categories/:categoryId",
+      this.carController.getAllByCategory
+    );
   }
 }
