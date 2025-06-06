@@ -1,4 +1,4 @@
-import { AuthController } from "./auth.controller";
+import { AuthController } from "./admin.controller";
 import { Router } from "express";
 
 export class AuthRoute {

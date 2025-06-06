@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { IUser } from "./auth.interface";
+import { IAdmin } from "./admin.interface";
 
-const userSchema = new mongoose.Schema(
+const AdminSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -36,6 +36,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model<IUser>("Auth", userSchema);
+const Admin = mongoose.model<IAdmin>("Admin", AdminSchema);
 
-export default User;
+export default Admin;

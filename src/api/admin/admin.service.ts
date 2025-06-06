@@ -1,12 +1,12 @@
 import { CustomError } from "../errorhandlers/error";
-import { IUser } from "./auth.interface";
-import User from "./auth.model";
+import { IAdmin } from "./admin.interface";
+import User from "./admin.model";
 import { ResponseHandler } from "../responses/response";
 import { generateAccessToken, generateHashedValue } from "../utils";
 import { checkValidity } from "../utils";
 
 export class AuthService {
-  public async register(payload: IUser) {
+  public async register(payload: IAdmin) {
     try {
       const { firstName, lastName, email, phone, password } = payload;
 

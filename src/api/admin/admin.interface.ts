@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export interface IUser {
+export interface IAdmin {
   firstName: string;
   lastName: string;
   email: string;
