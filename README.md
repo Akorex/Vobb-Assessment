@@ -10,12 +10,6 @@ git clone https://github.com/Akorex/Vobb-Assessment.git
 
 cd VobbAssessment
 
-## Install dependencies & start application
-
-1. npm install
-2. npm run build
-3. npm run start
-
 ## Create a .env file in the root directory and add the following variables:
 
 1. DATABASE_URL=your_database_connection_string
@@ -23,3 +17,10 @@ cd VobbAssessment
 3. NODE_ENV=development
 4. JWT_LIFETIME=1d
 5. JWT_SECRET=your_jwt_secret_key
+
+## Install dependencies & start application
+
+1. npm install
+2. npm run seed (to seed your database with relevant data)
+3. npm run build
+4. npm run start
