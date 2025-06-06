@@ -1,0 +1,60 @@
+import { CustomError } from "../errorhandlers/error";
+import { IUser } from "./auth.interface";
+import User from "./auth.model";
+import { ResponseHandler } from "../responses/response";
+import { generateAccessToken, generateHashedValue } from "../utils";
+import { checkValidity } from "../utils";
+
+export class AuthService {
+  public async register(payload: IUser) {
+    try {
+      const { firstName, lastName, email, phone, password } = payload;
+
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser) {
+        return ResponseHandler.error(`User already exists. Log in instead`);
+      }
+
+      await User.create({
+        firstName,
+        lastName,
+        email,
+        password: generateHashedValue(password),
+        phone,
+      });
+
+      return ResponseHandler.success(`Successfully created account`, {});
+    } catch (error) {
+      throw CustomError.wrap(error);
+    }
+  }
+
+  public async login(email: string, password: string) {
+    try {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return ResponseHandler.error(
+          `This account does not exist. Please signup instead`
+        );
+      }
+
+      // check if password matches with stored password in database
+      if (!checkValidity(password, user.password)) {
+        return ResponseHandler.error(
+          `You have entered a wrong login credentials`
+        );
+      }
+
+      const accessToken = generateAccessToken(user._id as unknown as string);
+
+      return ResponseHandler.success(`Successfully logged-in`, {
+        user,
+        accessToken,
+      });
+    } catch (error) {
+      throw CustomError.wrap(error);
+    }
+  }
+}
