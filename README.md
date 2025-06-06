@@ -8,16 +8,13 @@ git clone https://github.com/Akorex/Vobb-Assessment.git
 
 ## Navigate into the project directory
 
-cd your-repo-name
+cd VobbAssessment
 
-## Install dependencies
+## Install dependencies & start application
 
-npm install
-
-## start the application
-
-npm run build
-npm run start
+1. npm install
+2. npm run build
+3. npm run start
 
 ## Create a .env file in the root directory and add the following variables:
 
