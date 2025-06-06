@@ -3,6 +3,16 @@ import { ResponseHandler } from "../responses/response";
 import Car from "./cars.model";
 
 export class CarService {
+  public async create(payload: any) {
+    try {
+      const car = await Car.create(payload);
+
+      return ResponseHandler.success(`Successfully created car`, { car });
+    } catch (error) {
+      throw CustomError.wrap(error);
+    }
+  }
+
   public async get(id: string) {
     try {
       const car = await Car.findById(id);

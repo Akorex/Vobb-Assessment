@@ -1,16 +1,22 @@
-import { AuthController } from "./admin.controller";
+import { verifyUserAccessToken } from "../utils";
+import { AdminController } from "./admin.controller";
 import { Router } from "express";
 
 export class AdminRoute {
   public router = Router();
-  private authController = new AuthController();
+  private adminController = new AdminController();
 
   constructor() {
     this.initRoutes();
   }
 
   initRoutes() {
-    this.router.post("/admin/register", this.authController.register);
-    this.router.post("/admin/login", this.authController.login);
+    this.router.post("/admin/register", this.adminController.register);
+    this.router.post("/admin/login", this.adminController.login);
+    this.router.post(
+      "/admin/cars",
+      verifyUserAccessToken,
+      this.adminController.createNewCar
+    );
   }
 }

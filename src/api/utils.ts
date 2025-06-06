@@ -4,6 +4,7 @@ import { JWT_SECRET, JWT_LIFETIME } from "../../env";
 import { ResponseHandler } from "./responses/response";
 import { Request, Response, NextFunction } from "express";
 import Admin from "./admin/admin.model";
+import { CustomError } from "./errorhandlers/error";
 
 export interface Admin {
   id: string;
@@ -42,10 +43,10 @@ export const verifyUserAccessToken = async (
   const authHeaders = req.headers["authorization"];
   const token = authHeaders && authHeaders.split(" ")[1];
 
-  if (!token) return ResponseHandler.errorResponse(res, `Unauthorized`, 401);
+  if (!token) throw CustomError.wrap("Unauthorized");
 
   verify(token, JWT_SECRET, (err, token) => {
-    if (err) return ResponseHandler.errorResponse(res, `Forbidden`, 403);
+    if (err) throw CustomError.wrap("Unauthorized");
 
     const { id } = token as JwtPayload;
 
