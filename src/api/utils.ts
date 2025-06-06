@@ -1,6 +1,17 @@
 import { genSaltSync, hashSync, compareSync } from "bcryptjs";
-import { sign, verify } from "jsonwebtoken";
+import { sign, verify, JwtPayload } from "jsonwebtoken";
 import { JWT_SECRET, JWT_LIFETIME } from "../../env";
+import { ResponseHandler } from "./responses/response";
+import { Request, Response, NextFunction } from "express";
+import Admin from "./admin/admin.model";
+
+export interface Admin {
+  id: string;
+}
+
+export interface AdminRequest extends Request {
+  admin?: Admin;
+}
 
 export const generateHashedValue = (value: string) => {
   const salt = genSaltSync(10);
@@ -21,4 +32,25 @@ export const generateAccessToken = async (id: string): Promise<string> => {
 
 export const isTokenValid = (token: string) => {
   return verify(token, JWT_SECRET);
+};
+
+export const verifyUserAccessToken = async (
+  req: AdminRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeaders = req.headers["authorization"];
+  const token = authHeaders && authHeaders.split(" ")[1];
+
+  if (!token) return ResponseHandler.errorResponse(res, `Unauthorized`, 401);
+
+  verify(token, JWT_SECRET, (err, token) => {
+    if (err) return ResponseHandler.errorResponse(res, `Forbidden`, 403);
+
+    const { id } = token as JwtPayload;
+
+    req.admin = { id };
+
+    next();
+  });
 };
